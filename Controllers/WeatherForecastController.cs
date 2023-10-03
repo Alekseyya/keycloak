@@ -1,3 +1,4 @@
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,24 +17,39 @@ public class WeatherForecastController : ControllerBase
 
     private readonly ILogger<WeatherForecastController> _logger;
     private readonly IHttpContextAccessor httpContextAccessor;
+    private readonly IConfiguration configuration;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger , IHttpContextAccessor httpContextAccessor)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
     {
         _logger = logger;
         this.httpContextAccessor = httpContextAccessor;
+        this.configuration = configuration;
     }
     //[EnableCors("MyPolicy")]
     [HttpGet(Name = "GetWeatherForecast")]
-    public async Task<IEnumerable<WeatherForecast>> GetAsync()
+    public async Task<IActionResult> GetAsync()
     {
+        var clientId = configuration["Authentication:KeycloakAuthentication:ClientId"];
+        var clientSecret = configuration["Authentication:KeycloakAuthentication:ClientSecret"];
         var accessToken = await httpContextAccessor!.HttpContext!.GetTokenAsync("access_token");
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        var client = new HttpClient();
+        var intospect = await client.IntrospectTokenAsync(new TokenIntrospectionRequest
         {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)],
-            Token = accessToken!
-        })
-        .ToArray();
+            Address = "http://localhost:8080/realms/test/protocol/openid-connect/token/introspect",
+            ClientId = clientId,
+            ClientSecret = clientSecret,
+
+            Token = accessToken
+        });
+        if (!intospect.IsActive)
+            return BadRequest("Token not valid!");
+        var userInfo = await client.GetUserInfoAsync(new UserInfoRequest
+        {
+            Address = "http://localhost:8080/realms/test/protocol/openid-connect/userinfo",
+            Token = accessToken
+        });
+        if (userInfo.IsError)
+            return BadRequest("User info request error!");
+        return Ok(userInfo.Claims.Where(x => x.Type.Contains("airports")));
     }
 }

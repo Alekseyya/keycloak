@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "obtI4OuVWcmRvOo1CqLkfdDjAiliFa7LhTJE83ImF4E=",
-  "Source": "Test",
-  "BasePath": "_content/Test",
+  "Hash": "MISuItQPV4zsp+hw0nLOrUAOlWRlfSrz8bff/AEBU7s=",
+  "Source": "Keycloak",
+  "BasePath": "_content/Keycloak",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

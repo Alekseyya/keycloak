@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "qFQIYERGqotFaU4IxA5BLodj0X2vIX+YLXSnWmwaC9mVOUssxD8GqmH9lErvjPl9/D8bWgFf1qynKcW+1m09Pw==",
+  "dgSpecHash": "wXr47AR+5BqrdXehQW+ADafl8qHIi3Bh3v7gfTxiIyvKMIHM2IfCAKTRvpcy4hCUrFSKcPmS5tbp6pKggYoA1A==",
   "success": true,
   "projectFilePath": "C:\\Own\\Keycloak\\Keycloak.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\aleksey.yarchuk\\.nuget\\packages\\identitymodel\\6.2.0\\identitymodel.6.2.0.nupkg.sha512",
+    "C:\\Users\\aleksey.yarchuk\\.nuget\\packages\\identitymodel.aspnetcore\\4.3.0\\identitymodel.aspnetcore.4.3.0.nupkg.sha512",
     "C:\\Users\\aleksey.yarchuk\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.11\\microsoft.aspnetcore.authentication.jwtbearer.7.0.11.nupkg.sha512",
+    "C:\\Users\\aleksey.yarchuk\\.nuget\\packages\\microsoft.aspnetcore.authentication.openidconnect\\6.0.0\\microsoft.aspnetcore.authentication.openidconnect.6.0.0.nupkg.sha512",
     "C:\\Users\\aleksey.yarchuk\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.10\\microsoft.aspnetcore.openapi.7.0.10.nupkg.sha512",
     "C:\\Users\\aleksey.yarchuk\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\aleksey.yarchuk\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

@@ -41,7 +41,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(o =>
 {
-    o.Authority = builder.Configuration["Authentication:KeycloakAuthentication:ServerAddress"] + "/auth/realms/" + builder.Configuration["Authentication:KeycloakAuthentication:Realm"];
+    o.Authority = $"{builder.Configuration["Authentication:KeycloakAuthentication:ServerAddress"]}/realms/{builder.Configuration["Authentication:KeycloakAuthentication:Realm"]}";
     o.Audience = builder.Configuration["Authentication:KeycloakAuthentication:ClientId"];
     o.RequireHttpsMetadata = false;
     o.BackchannelHttpHandler = new HttpClientHandler
@@ -63,13 +63,6 @@ builder.Services.AddAuthentication(options =>
     o.SaveToken = true;
 });
 IdentityModelEventSource.ShowPII = true;
-builder.Services.AddHttpLogging(logging =>
-{
-    logging.LoggingFields = HttpLoggingFields.All;
-    logging.RequestBodyLogLimit = 4096;
-    logging.ResponseBodyLogLimit = 4096;
-
-});
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 var app = builder.Build();
@@ -84,7 +77,6 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
-app.UseHttpLogging();
 
 app.MapControllers();
 
