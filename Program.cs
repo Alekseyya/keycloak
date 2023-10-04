@@ -12,29 +12,29 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddLogging();
 var openIdConnectUrl = "http://localhost:8080/realms/test/.well-known/openid-configuration";
-
-builder.Services.AddSwaggerGen(c =>
-{
-    var securityScheme = new OpenApiSecurityScheme
-    {
-        Name = "Auth",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.OpenIdConnect,
-        OpenIdConnectUrl = new Uri(openIdConnectUrl),
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        Reference = new OpenApiReference
-        {
-            Id = "Bearer",
-            Type = ReferenceType.SecurityScheme
-        }
-    };
-    c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {securityScheme, Array.Empty<string>()}
-    });
-});
+builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen(c =>
+//{
+//    var securityScheme = new OpenApiSecurityScheme
+//    {
+//        Name = "Auth",
+//        In = ParameterLocation.Header,
+//        Type = SecuritySchemeType.OpenIdConnect,
+//        OpenIdConnectUrl = new Uri(openIdConnectUrl),
+//        Scheme = "bearer",
+//        BearerFormat = "JWT",
+//        Reference = new OpenApiReference
+//        {
+//            Id = "Bearer",
+//            Type = ReferenceType.SecurityScheme
+//        }
+//    };
+//    c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+//    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+//    {
+//        {securityScheme, Array.Empty<string>()}
+//    });
+//});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

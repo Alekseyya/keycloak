@@ -50,6 +50,6 @@ public class WeatherForecastController : ControllerBase
         });
         if (userInfo.IsError)
             return BadRequest("User info request error!");
-        return Ok(userInfo.Claims.Where(x => x.Type.Contains("airports")));
+        return Ok(userInfo.Claims.Where(x => x.Type.Contains("airports")).Select(x=> x.Value));
     }
 }
