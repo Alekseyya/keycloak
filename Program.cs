@@ -1,4 +1,6 @@
+using Keycloak;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -52,16 +54,24 @@ builder.Services.AddAuthentication(options =>
         }
     };
     o.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuer = true,
+    {//настройка надо ли проверять доп инф о токене
+        ValidateAudience = false,    // установка потребителя токена
+        ValidateLifetime = true, // будет ли валидироваться время существования
+        ValidateIssuer = true,// строка, представляющая издателя
         NameClaimType = "preferred_username",
         RoleClaimType = "role",
         ClockSkew = TimeSpan.Zero
     };
     o.SaveToken = true;
 });
+builder.Services.AddAuthorization(options => {
+    options.DefaultPolicy = new AuthorizationPolicyBuilder()
+            .AddRequirements(new AuthorizeAccessRequirement())
+            .Build();
+    options.AddPolicy("airport", policy => policy.Requirements.Add(new AirportAccessRequirement("SVO1")));
+});
+builder.Services.AddSingleton<IAuthorizationHandler, AuthorizeAccessRequirementHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, AirportAccessRequirementHandler>();
 IdentityModelEventSource.ShowPII = true;
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -78,6 +88,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 
-app.MapControllers();
+app.MapControllers().RequireAuthorization();
 
 app.Run();

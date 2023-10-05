@@ -25,7 +25,7 @@ public class WeatherForecastController : ControllerBase
         this.httpContextAccessor = httpContextAccessor;
         this.configuration = configuration;
     }
-    //[EnableCors("MyPolicy")]
+    [Authorize(Policy = "airport")]
     [HttpGet(Name = "GetWeatherForecast")]
     public async Task<IActionResult> GetAsync()
     {
@@ -51,5 +51,10 @@ public class WeatherForecastController : ControllerBase
         if (userInfo.IsError)
             return BadRequest("User info request error!");
         return Ok(userInfo.Claims.Where(x => x.Type.Contains("airports")).Select(x=> x.Value));
+    }
+    [HttpPost]
+    public IActionResult HelloAsync()
+    {
+        return Ok("Hello");
     }
 }
